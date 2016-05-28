@@ -31,7 +31,8 @@ private static final int isURI= 1;
            if(checkPathType(mStringList.get(i))==isURI)
            {
               //Call URI CLASS
-               igImage=IGUriLoader.loadURI(igImage,isURI,mStringList.size());
+               IGUriLoader igUriLoader=new IGUriLoader();
+               igImage=igUriLoader.loadURI(igImage,isURI,mStringList.size());
 
            }
             else if (checkPathType(mStringList.get(i))==isURL)

@@ -1,25 +1,16 @@
 package instagallery.kbibars.com.instagallery;
 
-import android.app.Activity;
-import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
-import android.provider.MediaStore;
-import android.provider.OpenableColumns;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v4.util.LruCache;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 
-import com.squareup.picasso.Picasso;
-
-import java.io.File;
 import java.util.ArrayList;
-import java.util.Date;
 
 import InstaGalleryAPI.IGImage;
 import InstaGalleryAPI.IGImageLoader;
@@ -28,6 +19,9 @@ public class MainActivity extends AppCompatActivity {
     ImageView myView;
     ArrayList<String> listOfAllImages;
     RecyclerView recyclerView;
+    Button button;
+
+    private LruCache<String, IGImage> mMemoryCache;
 
 
     @Override
@@ -35,23 +29,54 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         myView = (ImageView) findViewById(R.id.myView);
-        recyclerView=(RecyclerView)findViewById(R.id.recyler);
+        recyclerView = (RecyclerView) findViewById(R.id.recyler);
+        button = (Button) findViewById(R.id.tempbutton);
 
-        ArrayList<String> karim2= new ArrayList<String>();
-      //  karim2.add("/storage/emulated/0/DCIM/Camera/IMG_20160520_191145.jpg");
 
         IGImageLoader karim = new IGImageLoader();
 
-       // IGImage karim3= karim.loadAllDeviceImages(this).get(0);
-    //    myView.setImageBitmap(karim3.getmImage());
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
+        IGImage karim3 = karim.loadAllDeviceImages(this).get(0);
+        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 3);
         recyclerView.setLayoutManager(mLayoutManager);
-        MyAdapter adapter=new MyAdapter(karim.loadAllDeviceImages(this),getParent(),1);
+        final MyAdapter adapter = new MyAdapter(karim.loadAllDeviceImages(this), this, 1);
         recyclerView.setAdapter(adapter);
-        //Picasso.with(this).load(karim3.getmImagePath()).into(myView);
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                IGImageLoader karim = new IGImageLoader();
+
+                //IGImage karim3 = karim.loadAllDeviceImages(this).get(0);
+                RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(MainActivity.this, 3);
+                recyclerView.setLayoutManager(mLayoutManager);
+                final MyAdapter adapter = new MyAdapter(karim.loadAllDeviceImages(MainActivity.this), MainActivity.this, 1);
+                recyclerView.setAdapter(adapter);
+                recyclerView.invalidate();
+
+
+            }
+        });
 
     }
-}
+
+
+
+
+
+        public void loading ()
+    {
+
+    }
+
+
+    }
+
+
+
+
+
+
+
 
 
 

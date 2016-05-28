@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import InstaGalleryAPI.IGImage;
@@ -56,11 +57,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 /*        String mImageURL = "https://farm" + mDataset.get(position).getFarm() + ".staticflickr.com/" + mDataset.get(position).getServer() + "/" + mDataset.get(position).getId()
                 + "_" + mDataset.get(position).getSecret() + ".jpg";*/
 /*        Loading the Image using Picasso Library and adding a placeHolder icon*/
-/*        Picasso.with(mcontext)
-                .load(mImageURL)
-                .placeholder(R.mipmap.ic_launcher)
-                .error(R.mipmap.ic_launcher)
-                .into(holder.mImageView);*/
         /*Set RecylerView onclicklistner*/
     /*    holder.mSingleLatyout.setOnClickListener(new View.OnClickListener() {
             @Override
