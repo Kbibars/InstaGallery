@@ -1,5 +1,6 @@
 package instagallery.kbibars.com.instagallery;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.util.LruCache;
@@ -10,6 +11,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 import InstaGalleryAPI.IGImage;
@@ -20,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<String> listOfAllImages;
     RecyclerView recyclerView;
     Button button;
-
+int dirty =0;
     private LruCache<String, IGImage> mMemoryCache;
 
 
@@ -35,11 +42,14 @@ public class MainActivity extends AppCompatActivity {
 
         IGImageLoader karim = new IGImageLoader();
 
-        IGImage karim3 = karim.loadAllDeviceImages(this).get(0);
+     //   ArrayList<IGImage> karim3 = karim.loadAllDeviceImages(this);
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 3);
         recyclerView.setLayoutManager(mLayoutManager);
         final MyAdapter adapter = new MyAdapter(karim.loadAllDeviceImages(this), this, 1);
         recyclerView.setAdapter(adapter);
+
+
+
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,13 +72,34 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
-        public void loading ()
+/*
+        public void save (ArrayList<IGImage>karim3)
     {
+        FileOutputStream fos = null;
+        try {
+            fos = this.openFileOutput("karim", Context.MODE_PRIVATE);
+            ObjectOutputStream os = null;
+            os = new ObjectOutputStream(fos);
+            os.writeObject(karim3);
+            os.close();
+            fos.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
 
     }
 
+public IGImage loading() throws IOException, ClassNotFoundException {
 
+    FileInputStream fis = this.openFileInput("karim");
+    ObjectInputStream is = new ObjectInputStream(fis);
+    IGImage simpleClass = (IGImage) is.readObject();
+    is.close();
+    fis.close();
+    return  simpleClass;
+}*/
     }
 
 

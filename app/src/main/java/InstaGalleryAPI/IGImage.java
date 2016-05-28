@@ -2,12 +2,13 @@ package InstaGalleryAPI;
 
 import android.graphics.Bitmap;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by KBibars on 5/27/2016.
  */
-public class IGImage {
+public class IGImage implements Serializable {
     Bitmap mImage;
     String mImageName;
     String mImagePath;
@@ -15,7 +16,19 @@ public class IGImage {
     int mType; //0 for URL , 1for URI
     Date mDate;
 
+/*public IGImage (){
 
+}
+
+    public IGImage(Bitmap mImage,String mImageName,String mImagePath,Long mImageSize,int mType,Date mDate)
+    {
+        this.mImage=mImage;
+        this.mImageName=mImageName;
+        this.mImagePath=mImagePath;
+        this.mImageSize=mImageSize;
+        this.mType=mType;
+        this.mDate=mDate;
+    }*/
     public Bitmap getmImage() {
         return mImage;
     }
@@ -62,4 +75,5 @@ public class IGImage {
     public void setmDate(Date mDate) {
         this.mDate = mDate;
     }
+
 }

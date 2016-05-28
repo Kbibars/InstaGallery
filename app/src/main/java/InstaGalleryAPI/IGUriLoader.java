@@ -11,12 +11,28 @@ import java.util.Date;
 /**
  * Created by KBibars on 5/27/2016.
  */
-public class IGUriLoader  extends AsyncTask<IGImage,Void,IGImage>{
+public class IGUriLoader {
+    LruCache<String,IGImage>mMemoryCache;
+
+    public void karim (){
+        // Get max available VM memory, exceeding this amount will throw an
+        // OutOfMemory exception. Stored in kilobytes as LruCache takes an
+        // int in its constructor.
+        final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
+
+        // Use 1/8th of the available memory for this memory cache.
+        final int cacheSize = maxMemory / 8;
 
 
-    @Override
-    protected IGImage doInBackground(IGImage... params) {
-        return loadURI(params[0],1,200);
+        mMemoryCache = new LruCache<String, IGImage>(cacheSize) {
+            @Override
+            protected int sizeOf(String key, IGImage bitmap) {
+                // The cache size will be measured in kilobytes rather than
+                // number of items.
+                return bitmap.getmImage().getByteCount() / 1024;
+            }
+        };
+
     }
 
     public  IGImage loadURI(IGImage mImage,int mtype,int mImageListCount)
@@ -26,7 +42,7 @@ public class IGUriLoader  extends AsyncTask<IGImage,Void,IGImage>{
         String mImagename=  mFile.getName();
         Date mImagedate=new Date(mFile.lastModified());
         mImagelength=mImagelength/1024;
-
+        karim();
         if (mFile.exists())
         {
             mImage.setmImageName(mImagename);
@@ -43,14 +59,29 @@ public class IGUriLoader  extends AsyncTask<IGImage,Void,IGImage>{
             {
                 options.inSampleSize=0;
             }
+            if(mMemoryCache.get(mImage.getmImageName())!=null)
+            {
+                // mImage.setmImage(getBitmapFromMemCache(mImage.getmImagePath()).getmImage());
+                mImage=getBitmapFromMemCache(mImage.getmImagePath());
+            }
+            else {
                 Bitmap mBitmap = BitmapFactory.decodeFile(mFile.getAbsolutePath(), options);
                 mImage.setmImage(mBitmap);
-
+                addBitmapToMemoryCache(mImage.getmImagePath(),mImage);
+            }
         }
 
         return mImage;
     }
 
+    public void addBitmapToMemoryCache(String key, IGImage bitmap) {
+        if (getBitmapFromMemCache(key) == null) {
+            mMemoryCache.put(key, bitmap);
+        }
+    }
 
+    public IGImage getBitmapFromMemCache(String key) {
+        return mMemoryCache.get(key);
+    }
 
 }
