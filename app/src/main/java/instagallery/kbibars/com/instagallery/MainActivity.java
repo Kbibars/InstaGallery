@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.util.LruCache;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
@@ -27,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<String> listOfAllImages;
     RecyclerView recyclerView;
     Button button;
-int dirty =0;
+    int orientatoin=0;
     private LruCache<String, IGImage> mMemoryCache;
 
 
@@ -54,14 +55,18 @@ int dirty =0;
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                IGImageLoader karim = new IGImageLoader();
-
-                //IGImage karim3 = karim.loadAllDeviceImages(this).get(0);
-                RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(MainActivity.this, 3);
-                recyclerView.setLayoutManager(mLayoutManager);
-                final MyAdapter adapter = new MyAdapter(karim.loadAllDeviceImages(MainActivity.this), MainActivity.this, 1);
-                recyclerView.setAdapter(adapter);
-                recyclerView.invalidate();
+                if (orientatoin==0)
+                {
+                    orientatoin=1;
+                    RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(MainActivity.this, 3);
+                    recyclerView.setLayoutManager(mLayoutManager);
+                }
+                else if (orientatoin==1)
+                {
+                    orientatoin=0;
+                    RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(MainActivity.this);
+                    recyclerView.setLayoutManager(mLayoutManager);
+                }
 
 
             }
