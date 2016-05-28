@@ -19,17 +19,24 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 
 import InstaGalleryAPI.IGImage;
 import InstaGalleryAPI.IGImageLoader;
+import InstaGalleryAPI.IGSort;
 
 public class MainActivity extends AppCompatActivity {
     ImageView myView;
     ArrayList<String> listOfAllImages;
     RecyclerView recyclerView;
     Button button;
+    Button button2;
     int orientatoin=0;
     private LruCache<String, IGImage> mMemoryCache;
+
+    ArrayList<IGImage> mImageList;
 
 
     @Override
@@ -39,19 +46,29 @@ public class MainActivity extends AppCompatActivity {
         myView = (ImageView) findViewById(R.id.myView);
         recyclerView = (RecyclerView) findViewById(R.id.recyler);
         button = (Button) findViewById(R.id.tempbutton);
+        button2 = (Button) findViewById(R.id.tempbutton2);
 
 
-        IGImageLoader karim = new IGImageLoader();
+        IGImageLoader mImageLoader = new IGImageLoader();
 
-     //   ArrayList<IGImage> karim3 = karim.loadAllDeviceImages(this);
+        mImageList = mImageLoader.loadAllDeviceImages(this);
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 3);
         recyclerView.setLayoutManager(mLayoutManager);
-        final MyAdapter adapter = new MyAdapter(karim.loadAllDeviceImages(this), this, 1);
+
+        mImageList=IGSort.sortByName(mImageList);
+        final MyAdapter adapter = new MyAdapter(mImageList, this, 1);
         recyclerView.setAdapter(adapter);
 
 
 
-
+button2.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View v) {
+        mImageList=IGSort.sortBySize(mImageList);
+        adapter.notifyDataSetChanged();
+        recyclerView.invalidate();
+    }
+});
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

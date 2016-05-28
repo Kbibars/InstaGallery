@@ -3,12 +3,13 @@ package InstaGalleryAPI;
 import android.graphics.Bitmap;
 
 import java.io.Serializable;
+import java.util.Comparator;
 import java.util.Date;
 
 /**
  * Created by KBibars on 5/27/2016.
  */
-public class IGImage implements Serializable {
+public class IGImage implements Comparator<IGImage> {
     Bitmap mImage;
     String mImageName;
     String mImagePath;
@@ -76,4 +77,8 @@ public class IGImage implements Serializable {
         this.mDate = mDate;
     }
 
+    @Override
+    public int compare(IGImage lhs, IGImage rhs) {
+        return lhs.getmImageName().compareTo(rhs.getmImageName());
+    }
 }
