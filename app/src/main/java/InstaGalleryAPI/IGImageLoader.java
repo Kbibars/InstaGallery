@@ -17,7 +17,6 @@ import java.util.ArrayList;
  */
 public class IGImageLoader {
  public  ArrayList<IGImage> mIGImageList= new ArrayList<IGImage>();
-public IGImage igImage= new IGImage();
     ArrayList<String > listOfAllImages;
 
 private static final int isURI= 1;
@@ -27,11 +26,12 @@ private static final int isURI= 1;
     {
         for(int i =0;i<mStringList.size();i++)
         {
+            IGImage igImage= new IGImage();
             igImage.setmImagePath(mStringList.get(i));
            if(checkPathType(mStringList.get(i))==isURI)
            {
               //Call URI CLASS
-               igImage=IGUriLoader.loadURI(igImage,isURI);
+               igImage=IGUriLoader.loadURI(igImage,isURI,mStringList.size());
 
            }
             else if (checkPathType(mStringList.get(i))==isURL)
@@ -44,7 +44,7 @@ private static final int isURI= 1;
         return mIGImageList;
     }
 
-    public int  checkPathType(String path){
+    private int  checkPathType(String path){
 
         if (Patterns.WEB_URL.matcher(path).matches()) {
             return isURL;
@@ -81,9 +81,7 @@ private static final int isURI= 1;
             listOfAllImages.add(PathOfImage);
         }
 
-        mIGImageList=loadImagesList(listOfAllImages);
-        int karim =0;
-        return mIGImageList;
+        return loadImagesList(listOfAllImages);
     }
 
 

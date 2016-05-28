@@ -11,7 +11,7 @@ import java.util.Date;
  */
 public class IGUriLoader {
 
-    public static IGImage loadURI(IGImage mImage,int mtype)
+    public static IGImage loadURI(IGImage mImage,int mtype,int mImageListCount)
     {
         File mFile=new File(mImage.getmImagePath());
         Long mImagelength = mFile.length();
@@ -26,8 +26,7 @@ public class IGUriLoader {
             mImage.setmType(mtype);
 
             BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inSampleSize=7;
-
+            options.inSampleSize=10;
 
             Bitmap mBitmap = BitmapFactory.decodeFile(mFile.getAbsolutePath(),options);
             mImage.setmImage(mBitmap);
