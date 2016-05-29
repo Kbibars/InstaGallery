@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 3);
         recyclerView.setLayoutManager(mLayoutManager);
 
-        mImageList=IGSort.sortByName(mImageList);
+       // mImageList=IGSort.sortByName(mImageList);
         final MyAdapter adapter = new MyAdapter(mImageList, this, 1);
         recyclerView.setAdapter(adapter);
 
@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
 button2.setOnClickListener(new View.OnClickListener() {
     @Override
     public void onClick(View v) {
-        mImageList=IGSort.sortBySize(mImageList);
+        mImageList=IGSort.sortByDate(mImageList,false);
         adapter.notifyDataSetChanged();
         recyclerView.invalidate();
     }
