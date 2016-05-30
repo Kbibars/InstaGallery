@@ -2,6 +2,8 @@ package InstaGalleryAPI;
 
 import android.graphics.Bitmap;
 
+
+
 import java.io.Serializable;
 import java.util.Comparator;
 import java.util.Date;
@@ -9,7 +11,7 @@ import java.util.Date;
 /**
  * Created by KBibars on 5/27/2016.
  */
-public class IGImage implements Comparator<IGImage> {
+public class IGImage implements Comparator<IGImage>,Serializable {
     Bitmap mImage;
     String mImageName;
     String mImagePath;
@@ -17,19 +19,19 @@ public class IGImage implements Comparator<IGImage> {
     int mType; //0 for URL , 1for URI
     Date mDate;
 
-/*public IGImage (){
+    /*public IGImage (){
 
-}
+    }
 
-    public IGImage(Bitmap mImage,String mImageName,String mImagePath,Long mImageSize,int mType,Date mDate)
-    {
-        this.mImage=mImage;
-        this.mImageName=mImageName;
-        this.mImagePath=mImagePath;
-        this.mImageSize=mImageSize;
-        this.mType=mType;
-        this.mDate=mDate;
-    }*/
+        public IGImage(Bitmap mImage,String mImageName,String mImagePath,Long mImageSize,int mType,Date mDate)
+        {
+            this.mImage=mImage;
+            this.mImageName=mImageName;
+            this.mImagePath=mImagePath;
+            this.mImageSize=mImageSize;
+            this.mType=mType;
+            this.mDate=mDate;
+        }*/
     public Bitmap getmImage() {
         return mImage;
     }

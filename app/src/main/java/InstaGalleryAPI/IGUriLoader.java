@@ -14,7 +14,8 @@ import java.util.Date;
 public class IGUriLoader {
     LruCache<String,IGImage>mMemoryCache;
 
-    public void karim (){
+//Failed attemps to use cache
+    public void initializeCache (){
         // Get max available VM memory, exceeding this amount will throw an
         // OutOfMemory exception. Stored in kilobytes as LruCache takes an
         // int in its constructor.
@@ -29,22 +30,24 @@ public class IGUriLoader {
             protected int sizeOf(String key, IGImage bitmap) {
                 // The cache size will be measured in kilobytes rather than
                 // number of items.
-                return bitmap.getmImage().getByteCount() / 1024;
+                return 1024*16;
             }
         };
 
     }
-
+/*Returns a single IGImage object with size , name , date , path , and bitmap image */
     public  IGImage loadURI(IGImage mImage,int mtype,int mImageListCount)
     {
+    /*    Load the file using the image path and extract all the information regarding that file */
         File mFile=new File(mImage.getmImagePath());
         Long mImagelength = mFile.length();
         String mImagename=  mFile.getName();
         Date mImagedate=new Date(mFile.lastModified());
         mImagelength=mImagelength/1024;
-        karim();
+        initializeCache();
         if (mFile.exists())
         {
+
             mImage.setmImageName(mImagename);
             mImage.setmImageSize(mImagelength);
             mImage.setmDate(mImagedate);
@@ -52,8 +55,10 @@ public class IGUriLoader {
 
             BitmapFactory.Options options = new BitmapFactory.Options();
             //Better to use powers of 2 for some reason (Need to investigate)
+            /*If the number of strings to load is more than 20 I sample the bitmap to avoid OOM */
             if (mImageListCount>20) {
                 options.inSampleSize = 8;
+
             }
             else
             {
@@ -65,9 +70,11 @@ public class IGUriLoader {
                 mImage=getBitmapFromMemCache(mImage.getmImagePath());
             }
             else {
+               /* Load the Bitmap*/
                 Bitmap mBitmap = BitmapFactory.decodeFile(mFile.getAbsolutePath(), options);
                 mImage.setmImage(mBitmap);
                 addBitmapToMemoryCache(mImage.getmImagePath(),mImage);
+
             }
         }
 

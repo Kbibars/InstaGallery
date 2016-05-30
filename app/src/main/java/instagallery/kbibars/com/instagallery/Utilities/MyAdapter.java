@@ -1,7 +1,10 @@
-package instagallery.kbibars.com.instagallery;
+package instagallery.kbibars.com.instagallery.Utilities;
 
+import android.app.Activity;
+import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,12 +13,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
-
-import java.io.File;
 import java.util.ArrayList;
 
 import InstaGalleryAPI.IGImage;
+import instagallery.kbibars.com.instagallery.R;
+import instagallery.kbibars.com.instagallery.SingleImage;
 
 /**
  * Created by KBibars on 5/28/2016.
@@ -53,22 +55,20 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         // - replace the contents of the view with that element
         holder.mTextView.setText(mDataset.get(position).getmImageName());
         holder.mImageView.setImageBitmap(mDataset.get(position).getmImage());
-        //Make the URL to call in picasso to load the picture
-/*        String mImageURL = "https://farm" + mDataset.get(position).getFarm() + ".staticflickr.com/" + mDataset.get(position).getServer() + "/" + mDataset.get(position).getId()
-                + "_" + mDataset.get(position).getSecret() + ".jpg";*/
-/*        Loading the Image using Picasso Library and adding a placeHolder icon*/
-        /*Set RecylerView onclicklistner*/
-    /*    holder.mSingleLatyout.setOnClickListener(new View.OnClickListener() {
+        //HandleClicklistner on the view to view full image
+        holder.mSingleLatyout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mActivyID == 1) {
-                    Intent mIntent = new Intent(mcontext, User_Activity.class);
-                    mIntent.putExtra("mOwnerID", mDataset.get(position).getOwner());
-                    mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    mcontext.startActivity(mIntent);
-                }
+                Intent intent = new Intent(mcontext, SingleImage.class);
+                intent.putExtra("name", mDataset.get(position).getmImageName());
+                intent.putExtra("date", mDataset.get(position).getmDate().toString());
+                intent.putExtra("size", mDataset.get(position).getmImageSize().toString());
+                intent.putExtra("path", mDataset.get(position).getmImagePath());
+                mcontext.startActivity(intent);
+
             }
-        });*/
+        });
+
 
     }
 
@@ -87,14 +87,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
             super(v);
             mImageView = (ImageView) v.findViewById(R.id.mImage_view);
             mTextView = (TextView) v.findViewById(R.id.mTextview);
-          //  mSingleLatyout = (LinearLayout) v.findViewById(R.id.mSingleLatyout);
-            v.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    //Toast.makeText(v.getContext(), "Toast", Toast.LENGTH_SHORT).show();
-                }
-            });
+            mSingleLatyout=(LinearLayout)v.findViewById(R.id.mSingleLatyout) ;
 
 
         }

@@ -9,8 +9,7 @@ import java.util.Comparator;
  */
 public class IGSort {
 
-
-
+    /*Returns a Sorted Arraylist of IGImage asc or desc with respect to size */
     public static ArrayList<IGImage> sortBySize(ArrayList<IGImage> igImages, final boolean ascending)
     {
         Collections.sort(igImages, new Comparator<IGImage>() {
@@ -29,7 +28,7 @@ public class IGSort {
 
         return igImages ;
     }
-
+    /*Returns a Sorted Arraylist of IGImage asc or desc with respect to name */
     public static ArrayList<IGImage> sortByName(ArrayList<IGImage> igImages, final boolean ascending)
     {
         Collections.sort(igImages, new Comparator<IGImage>() {
@@ -50,7 +49,7 @@ public class IGSort {
 
         return igImages ;
     }
-
+    /*Returns a Sorted Arraylist of IGImage asc or desc with respect to date*/
     public static ArrayList<IGImage> sortByDate(ArrayList<IGImage> igImages, final boolean ascending)
     {
         Collections.sort(igImages, new Comparator<IGImage>() {

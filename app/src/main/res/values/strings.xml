@@ -2,4 +2,13 @@
     <string name="app_name">instaGallery</string>
     <string name="Image_view">Imageview</string>
     <string name="myImage">PlaceHolder</string>
+    <string name="apply">Apply</string>
+    <string name="to_date">To Date</string>
+    <string name="from_date">From Date</string>
+    <string name="apply_filter">Apply Filter</string>
+    <string name="switch_layout">Switch Layout</string>
+    <string name="reload">Reload</string>
+
+    <string name="apply_sort">Apply Sort</string>
+    <string name="instagallery">InstaGallery</string>
 </resources>

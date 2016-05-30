@@ -15,22 +15,28 @@ import java.util.ArrayList;
 /**
  * Created by KBibars on 5/27/2016.
  */
-public class IGImageLoader {
+public class IGImageLoader   {
  public  ArrayList<IGImage> mIGImageList= new ArrayList<IGImage>();
     ArrayList<String > listOfAllImages;
 
-private static final int isURI= 1;
+    private static final int isURI= 1;
     private static final int isURL=0;
 
-    public  ArrayList<IGImage> loadImagesList(ArrayList<String> mStringList)
+/*    Returns an arraylist of IGImage using an Arraylist of Strings of URI/URL with starting index and ending index to load
+    a specific amount of images if needed */
+    public  ArrayList<IGImage> loadImagesList(ArrayList<String> mStringList,int startingIndex,int endingIndex)
     {
-        for(int i =0;i<mStringList.size();i++)
+        if(endingIndex==-1)
+        {
+            endingIndex=mStringList.size();
+        }
+        for(int i =startingIndex;i<endingIndex;i++)
         {
             IGImage igImage= new IGImage();
             igImage.setmImagePath(mStringList.get(i));
            if(checkPathType(mStringList.get(i))==isURI)
            {
-              //Call URI CLASS
+              //Call URILoader
                IGUriLoader igUriLoader=new IGUriLoader();
                igImage=igUriLoader.loadURI(igImage,isURI,mStringList.size());
 
@@ -40,8 +46,10 @@ private static final int isURI= 1;
                //Call URL CLASS
 
            }
+           /* Add the returned IGImage to the list */
             mIGImageList.add(igImage);
         }
+
         return mIGImageList;
     }
 
@@ -55,8 +63,9 @@ private static final int isURI= 1;
             return isURI;
         }
     }
-
-    public ArrayList<IGImage> loadAllDeviceImages(Activity activity){
+/*Loads a string list with all the URIs of the images in the device*/
+    public ArrayList<String> loadAllDeviceImages(Activity activity){
+        /*Uses Cursor to get all the URIs in the device*/
         Uri uri;
         Cursor cursor;
 
@@ -69,21 +78,16 @@ private static final int isURI= 1;
         cursor = activity.getContentResolver().query(uri, projection, null,
                 null, null);
         column_index_data = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
-        column_index_folder_name = cursor
-                .getColumnIndexOrThrow(MediaStore.Images.Media.BUCKET_DISPLAY_NAME);
+
+     //TODO:After considertion I might have been able to get the size,date, and name of the file at this point and use them which might have saved a bit of memory instead of loading them in the ImageLoader
         while (cursor.moveToNext()) {
             PathOfImage = cursor.getString(column_index_data);
-            int nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
-            int sizeIndex = cursor.getColumnIndex(OpenableColumns.SIZE);
-            if(nameIndex!=-1)
-            {
-                String karim = cursor.getString(nameIndex);
-            }
             listOfAllImages.add(PathOfImage);
         }
 
-        return loadImagesList(listOfAllImages);
+        return listOfAllImages;
     }
+
 
 
 
