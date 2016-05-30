@@ -111,8 +111,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.switch_layout:
                 switchLayout();
+                break;
             case R.id.reload:
                 reload();
+                break;
             default:
                 break;
 

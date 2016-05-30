@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">instaGallery</string>
+    <string name="app_name">InstaGallery</string>
     <string name="Image_view">Imageview</string>
     <string name="myImage">PlaceHolder</string>
     <string name="apply">Apply</string>

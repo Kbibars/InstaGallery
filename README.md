@@ -15,4 +15,7 @@ To Sort or Filter your list : Call IGISort or IGIFilter , it will return a sorte
 Note: The API still needs tweaking regarding caching the images and running on a different thread than the Main thread ,
 I realized this problem mid-work and was too late to fix within the time frame .
 
+Final Note : I tried many methods to cache the image instead of having it stored like this , I looked into LRUcachin, Looked into DiskCaching , DoubleCache library and for some reason
+Nothing worked untill the date of delivery.
+
 
