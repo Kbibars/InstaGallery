@@ -1,6 +1,7 @@
 package InstaGalleryAPI;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.os.AsyncTask;
 
 import com.android.volley.toolbox.ImageLoader;
@@ -18,6 +19,7 @@ public class LoaderThread extends AsyncTask<Integer,Integer,Integer>  {
     int endingIndex;
     ArrayList<IGImage> igImages;
     Activity context;
+    ProgressDialog progressDialog;
 
     public LoaderThread(ArrayList<String> strings,int startingIndex,int endingIndex,ArrayList<IGImage>igImages , Activity context){
         this.startingIndex=startingIndex;
@@ -37,5 +39,17 @@ this.context=context;
     @Override
     protected void onPostExecute(Integer integer) {
         MainActivity.reloadcompletion(igImages,context);
+        progressDialog.dismiss();
+
+    }
+
+    @Override
+    protected void onPreExecute() {
+         progressDialog=new ProgressDialog(context);
+        progressDialog.setMessage("Loading Images...Please Wait ");
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.setIndeterminate(true);
+        progressDialog.show();
+        super.onPreExecute();
     }
 }
