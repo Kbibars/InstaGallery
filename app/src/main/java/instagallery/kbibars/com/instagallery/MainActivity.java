@@ -1,5 +1,7 @@
 package instagallery.kbibars.com.instagallery;
 
+import android.app.Activity;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -23,6 +25,7 @@ import InstaGalleryAPI.IGFilter;
 import InstaGalleryAPI.IGImage;
 import InstaGalleryAPI.IGImageLoader;
 import InstaGalleryAPI.IGSort;
+import InstaGalleryAPI.LoaderThread;
 import instagallery.kbibars.com.instagallery.Utilities.MyAdapter;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -35,12 +38,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Button switchLayout;
     Button reload;
 
-    RecyclerView recyclerView;
+   static RecyclerView recyclerView;
     int orientation = 0;
-    ArrayList<IGImage> mImageList;
+   static ArrayList<IGImage> mImageList;
     ArrayList<String> mImageUriList;
     IGImageLoader mImageLoader;
-    MyAdapter adapter;
+    static MyAdapter adapter;
 
     private String[] criteriaSpinner;
     private String[] typeSpinner;
@@ -202,13 +205,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 */
         mImageUriList = mImageLoader.loadAllDeviceImages(this);
         /*Call loadImagesList using the list returned from loadAllDeviceImages and passing 0 as the starting index and -1 to load all */
-        mImageList = mImageLoader.loadImagesList(mImageUriList, 0, -1);
+        //mImageList = mImageLoader.loadImagesList(mImageUriList, 0, -1);
+        new LoaderThread(mImageUriList,0,-1,mImageList,this).execute(1, 1, 1);
 
 
-        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 3);
+
+
+    }
+    public static void  reloadcompletion(ArrayList<IGImage> mImageList2,Activity context){
+        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(context, 3);
         recyclerView.setLayoutManager(mLayoutManager);
-        adapter = new MyAdapter(mImageList, this, 1);
+        adapter = new MyAdapter(mImageList2,context, 1);
         recyclerView.setAdapter(adapter);
+        mImageList=mImageList2;
+
     }
 }
 

@@ -18,4 +18,5 @@ I realized this problem mid-work and was too late to fix within the time frame .
 Final Note : I tried many methods to cache the image instead of having it stored like this , I looked into LRUcachin, Looked into DiskCaching , DoubleCache library and for some reason
 Nothing worked untill the date of delivery. Need to consider using an AsyncTask to load theimages to avoid loading all that on the main thread
 
-
+EDIT : Now you can call the function which loads the images on another thread using LoaderThread and calling a function that
+populates the Recyclerview from inside the Asynctast in the LoaderThread
