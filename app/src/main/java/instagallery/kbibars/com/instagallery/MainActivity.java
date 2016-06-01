@@ -26,21 +26,35 @@ import InstaGalleryAPI.IGImage;
 import InstaGalleryAPI.IGImageLoader;
 import InstaGalleryAPI.IGSort;
 import InstaGalleryAPI.LoaderThread;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import instagallery.kbibars.com.instagallery.Utilities.MyAdapter;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+
+
+    @BindView(R.id.sort_criteria)
     Spinner sortCriteria;
+    @BindView(R.id.sort_type)
     Spinner sortType;
+    @BindView(R.id.apply_sort)
     Button applySort;
+    @BindView(R.id.from_date)
     EditText fromDate;
+    @BindView(R.id.to_date)
     EditText toDate;
+    @BindView(R.id.apply_filter)
     Button applyFilter;
+    @BindView(R.id.switch_layout)
     Button switchLayout;
+    @BindView(R.id.reload)
     Button reload;
 
-   static RecyclerView recyclerView;
+
+
+    static RecyclerView recyclerView;
     int orientation = 0;
-   static ArrayList<IGImage> mImageList;
+    static ArrayList<IGImage> mImageList;
     ArrayList<String> mImageUriList;
     IGImageLoader mImageLoader;
     static MyAdapter adapter;
@@ -53,15 +67,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         /*View intializations (Should have used Dagger)*/
-        recyclerView = (RecyclerView) findViewById(R.id.recyler_view);
-        sortCriteria = (Spinner) findViewById(R.id.sort_criteria);
-        sortType = (Spinner) findViewById(R.id.sort_type);
-        applySort = (Button) findViewById(R.id.apply_sort);
-        fromDate = (EditText) findViewById(R.id.from_date);
-        toDate = (EditText) findViewById(R.id.to_date);
-        applyFilter = (Button) findViewById(R.id.apply_filter);
-        switchLayout = (Button) findViewById(R.id.switch_layout);
-        reload = (Button) findViewById(R.id.reload);
+        ButterKnife.bind(this);
+        recyclerView=(RecyclerView)findViewById(R.id.recyler_view);
+
 
         /*Initializing the spinners used for the sorting*/
         initializeAdapters();
@@ -83,10 +91,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         this.typeSpinner = new String[]{"Asc", "Desc"};
         ArrayAdapter<String> tempAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item, criteriaSpinner);
-        sortCriteria.setAdapter(tempAdapter);
-
         ArrayAdapter<String> tempAdapter2 = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item, typeSpinner);
+
+        sortCriteria.setAdapter(tempAdapter);
         sortType.setAdapter(tempAdapter2);
     }
 
@@ -206,18 +214,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mImageUriList = mImageLoader.loadAllDeviceImages(this);
         /*Call loadImagesList using the list returned from loadAllDeviceImages and passing 0 as the starting index and -1 to load all */
         //mImageList = mImageLoader.loadImagesList(mImageUriList, 0, -1);
-        new LoaderThread(mImageUriList,0,-1,mImageList,this).execute(1, 1, 1);
-
-
+        new LoaderThread(mImageUriList, 0, -1, mImageList, this).execute(1, 1, 1);
 
 
     }
-    public static void  reloadcompletion(ArrayList<IGImage> mImageList2,Activity context){
+
+    public static void reloadcompletion(ArrayList<IGImage> mImageList2, Activity context) {
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(context, 3);
         recyclerView.setLayoutManager(mLayoutManager);
-        adapter = new MyAdapter(mImageList2,context, 1);
+        adapter = new MyAdapter(mImageList2, context, 1);
         recyclerView.setAdapter(adapter);
-        mImageList=mImageList2;
+        mImageList = mImageList2;
 
     }
 }
