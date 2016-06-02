@@ -3,30 +3,34 @@ package InstaGalleryAPI;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
-
-import com.android.volley.toolbox.ImageLoader;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-import instagallery.kbibars.com.instagallery.MainActivity;
+import instagallery.kbibars.com.instagallery.MyAdapter;
 
 /**
  * Created by kbibars on 5/31/16.
  */
 public class LoaderThread extends AsyncTask<Integer, Integer, Integer> {
+
     ArrayList<String> strings;
     int startingIndex;
     int endingIndex;
-    ArrayList<IGImage> igImages;
+   public static ArrayList<IGImage> igImages;
     Activity context;
     ProgressDialog progressDialog;
+    RecyclerView recyclerView;
+    MyAdapter adapter;
 
-    public LoaderThread(ArrayList<String> strings, int startingIndex, int endingIndex, ArrayList<IGImage> igImages, Activity context) {
+    public LoaderThread(ArrayList<String> strings, int startingIndex, int endingIndex, Activity context,RecyclerView recyclerView,MyAdapter adapter) {
         this.startingIndex = startingIndex;
         this.strings = strings;
         this.endingIndex = endingIndex;
-        this.igImages = igImages;
         this.context = context;
+        this.recyclerView=recyclerView;
+        this.adapter=adapter;
     }
 
     @Override
@@ -38,7 +42,10 @@ public class LoaderThread extends AsyncTask<Integer, Integer, Integer> {
 
     @Override
     protected void onPostExecute(Integer integer) {
-        MainActivity.reloadcompletion(igImages, context);
+        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(context, 3);
+        recyclerView.setLayoutManager(mLayoutManager);
+        adapter = new MyAdapter(igImages, context, 1);
+        recyclerView.setAdapter(adapter);
         progressDialog.dismiss();
 
     }

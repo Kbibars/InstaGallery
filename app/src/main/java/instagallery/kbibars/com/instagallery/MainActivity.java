@@ -1,7 +1,7 @@
 package instagallery.kbibars.com.instagallery;
 
 import android.app.Activity;
-import android.os.AsyncTask;
+import android.content.Loader;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -28,7 +28,6 @@ import InstaGalleryAPI.IGSort;
 import InstaGalleryAPI.LoaderThread;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import instagallery.kbibars.com.instagallery.Utilities.MyAdapter;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -49,15 +48,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Button switchLayout;
     @BindView(R.id.reload)
     Button reload;
+    @BindView(R.id.recyler_view)
+    RecyclerView recyclerView;
 
-
-
-    static RecyclerView recyclerView;
     int orientation = 0;
     static ArrayList<IGImage> mImageList;
     ArrayList<String> mImageUriList;
     IGImageLoader mImageLoader;
-    static MyAdapter adapter;
+    MyAdapter adapter;
 
     private String[] criteriaSpinner;
     private String[] typeSpinner;
@@ -68,7 +66,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         /*View intializations (Should have used Dagger)*/
         ButterKnife.bind(this);
-        recyclerView=(RecyclerView)findViewById(R.id.recyler_view);
+
 
 
         /*Initializing the spinners used for the sorting*/
@@ -137,7 +135,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     */
     public void applySort(String criteria, String type) {
         ArrayList<IGImage> temp = new ArrayList<>();
-        temp = mImageList;
+        temp = LoaderThread.igImages;
         switch (criteria) {
             case "Name":
                 if (type.equals("Asc")) {
@@ -196,7 +194,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         ArrayList<IGImage> igImages;
 
 
-        igImages = IGFilter.filterByDate(mImageList, fromDate, toDate);
+        igImages = IGFilter.filterByDate(LoaderThread.igImages, fromDate, toDate);
         adapter = new MyAdapter(igImages, MainActivity.this, 1);
         adapter.notifyDataSetChanged();
         recyclerView.setAdapter(adapter);
@@ -214,19 +212,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mImageUriList = mImageLoader.loadAllDeviceImages(this);
         /*Call loadImagesList using the list returned from loadAllDeviceImages and passing 0 as the starting index and -1 to load all */
         //mImageList = mImageLoader.loadImagesList(mImageUriList, 0, -1);
-        new LoaderThread(mImageUriList, 0, -1, mImageList, this).execute(1, 1, 1);
+        new LoaderThread(mImageUriList, 0, -1, this, recyclerView, adapter).execute(1, 1, 1);
 
 
     }
 
-    public static void reloadcompletion(ArrayList<IGImage> mImageList2, Activity context) {
-        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(context, 3);
-        recyclerView.setLayoutManager(mLayoutManager);
-        adapter = new MyAdapter(mImageList2, context, 1);
-        recyclerView.setAdapter(adapter);
-        mImageList = mImageList2;
-
-    }
 }
 
 

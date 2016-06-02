@@ -1,10 +1,7 @@
-package instagallery.kbibars.com.instagallery.Utilities;
+package instagallery.kbibars.com.instagallery;
 
-import android.app.Activity;
-import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,8 +13,8 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import InstaGalleryAPI.IGImage;
-import instagallery.kbibars.com.instagallery.R;
-import instagallery.kbibars.com.instagallery.SingleImage;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Created by KBibars on 5/28/2016.
@@ -44,7 +41,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         // create a new view
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.single_item, parent, false);
-        // set the view's size, margins, paddings and layout parameters
         return new ViewHolder(v);
     }
 
@@ -56,7 +52,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         holder.mTextView.setText(mDataset.get(position).getmImageName());
         holder.mImageView.setImageBitmap(mDataset.get(position).getmImage());
         //HandleClicklistner on the view to view full image
-        holder.mSingleLatyout.setOnClickListener(new View.OnClickListener() {
+        holder.mSingleLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(mcontext, SingleImage.class);
@@ -79,16 +75,15 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView mTextView;
-        public ImageView mImageView;
-        public LinearLayout mSingleLatyout;
+
+        @BindView(R.id.mImage_view) ImageView mImageView;
+        @BindView(R.id.mTextview) TextView mTextView;
+        @BindView(R.id.mSingleLayout) LinearLayout mSingleLayout;
+
 
         public ViewHolder(View v) {
             super(v);
-            mImageView = (ImageView) v.findViewById(R.id.mImage_view);
-            mTextView = (TextView) v.findViewById(R.id.mTextview);
-            mSingleLatyout=(LinearLayout)v.findViewById(R.id.mSingleLatyout) ;
-
+            ButterKnife.bind(this, v);
 
         }
 
